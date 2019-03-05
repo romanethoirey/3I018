@@ -1,0 +1,80 @@
+package microjs.jcompiler.frontend.parser;
+
+import java.util.List;
+import java.util.LinkedList;
+
+import java_cup.runtime.*;
+import microjs.jcompiler.frontend.lexer.Lexer;
+import microjs.jcompiler.frontend.ast.*;
+
+terminal SEMICOL, VAR, LET, EQ,
+         LPAREN, RPAREN, LCURLY, RCURLY,
+         IF, ELSE,
+         PLUS, MINUS, TIMES, DIV, EQEQ, PUIS;
+
+terminal String IDENTIFIER;
+terminal Integer INT;
+terminal Boolean BOOL;
+
+non terminal Prog program;
+non terminal Expr expr;
+
+
+
+precedence left EQEQ;
+precedence left PLUS, MINUS;
+precedence left TIMES, DIV;
+precedence rigth PUIS;
+
+
+program ::=
+    statements:prog
+	{: RESULT = new Prog("", prog, progxleft, progxright); :}
+;
+
+
+
+
+
+expr ::=
+    INT:n
+	{:
+	   RESULT = new IntConst(n, nxleft, nxright);
+	:}
+  | BOOL:b
+	{:
+	   RESULT = new BoolConst(b, bxleft, bxright);
+	:}
+  | IDENTIFIER:var
+	{:
+	   RESULT = new EVar(var, varxleft, varxright);
+	:}
+  | expr:l  PLUS  expr:r
+	{:
+	   RESULT = new BinOp("+", l, r, lxleft, rxright);
+	:}
+  | expr:l  MINUS  expr:r
+	{:
+	   RESULT = new BinOp("-", l, r, lxleft, rxright);
+	:}
+  | expr:l  TIMES  expr:r
+	{:
+	   RESULT = new BinOp("*", l, r, lxleft, rxright);
+	:}
+  | expr:l  DIV  expr:r
+	{:
+	   RESULT = new BinOp("/", l, r, lxleft, rxright);
+	:}
+  | expr:l  EQEQ  expr:r
+	{:
+	   RESULT = new BinOp("==", l, r, lxleft, rxright);
+	:}
+  | LPAREN  expr:e  RPAREN
+	{:
+	   RESULT = e;
+	:}
+  | expr: l PUIS expr:r
+    	{:
+	  RESULT = new BinOp("**", l ,r ,lxleft, rxrigth);
+	:}  
+;

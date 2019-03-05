@@ -1,0 +1,14 @@
+
+A faire :
+
+1. Completer les fichiers d'entree pour jflex (lexer/lexer.jflex)
+   et pour CUP (parser/parser.cup) selon vos besoins pour les analyses
+   respectives lexicale et syntaxique.
+
+2. Taper la commande    ant
+   pour generer les analyseurs lexical (jflex) et syntaxique (CUP)
+   et compiler ces differents fichiers en un fichier TD.class
+
+3. Ecrire dans un fichier (par exemple test1) l'expression a tester
+
+4. Et enfin, taper la commande   java TD2 test1

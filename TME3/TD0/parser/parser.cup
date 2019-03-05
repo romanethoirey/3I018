@@ -1,0 +1,42 @@
+/* java -jar /usr/share/java/java_cup.jar -locations parser.cup */
+
+package parser;
+
+import java_cup.runtime.*;
+import lexer.Lexer;
+import ast.*;
+
+terminal LPAREN, RPAREN, PLUS, MINUS, TIMES, DIV, MOD;
+
+terminal POINT_INTERROGATION, DEUX_POINTS, INF, SUP, INF_EGAL, SUP_EGAL, DOUBLE_EGAL, INEGAL;
+
+terminal String  IDENTIFIER;
+terminal Integer INT;
+
+non terminal Expr Eexpr, Texpr, Fexpr, Cexpr;
+
+precedence left PLUS, MINUS;
+precedence left TIMES, DIV;
+
+start with Eexpr;	/* inutile ici car on commence les regles par expr */
+
+Eexpr ::=
+    Eexpr:l PLUS Texpr:r {: RESULT = new BinOp("+", l, r, lxleft, rxright); :}
+  | Eexpr:l MINUS Texpr:r {: RESULT = new BinOp("-", l, r, lxleft, rxright); :}
+  | Texpr:t {: RESULT = t; :}
+;
+
+Texpr ::=
+    Texpr:l TIMES Fexpr:r {: RESULT = new BinOp("*", l, r, lxleft, rxright); :}
+  | Texpr:l DIV Fexpr:r {: RESULT = new BinOp("/", l, r, lxleft, rxright); :}
+  | Fexpr:f {: RESULT = f; :}
+;
+
+Fexpr ::=
+  INT:n {: RESULT = new IntConst(n, nxleft, nxright); :}
+  | IDENTIFIER:var {: RESULT = new EVar(var, varxleft, varxright); :}
+  | LPAREN Eexpr:e RPAREN {: RESULT = e; :}
+;
+
+Cexpr ::=
+  

@@ -1,0 +1,39 @@
+/* java -jar /usr/share/java/java_cup.jar -locations parser.cup */
+
+package parser;
+
+import java_cup.runtime.*;
+import lexer.Lexer;
+import ast.*;
+
+terminal LPAREN, RPAREN, PLUS, MINUS, TIMES, DIV;
+
+terminal INF, SUP, INF_EGAL, SUP_EGAL, DOUBLE_EGAL, INEGAL;
+
+terminal String  IDENTIFIER;
+terminal Integer INT;
+
+non terminal Expr expr;
+
+precedence left DOUBLE_EGAL, INEGAL;
+precedence left INF, SUP, INF_EGAL, SUP_EGAL;
+precedence left PLUS, MINUS;
+precedence left TIMES, DIV;
+
+start with expr;	/* inutile ici car on commence les regles par expr */
+  
+expr ::=
+  INT:n {: RESULT = new IntConst(n, nxleft, nxright); :}
+  | IDENTIFIER:var {: RESULT = new EVar(var, varxleft, varxright); :}
+  | expr:l PLUS expr:r {: RESULT = new BinOp("+", l, r, lxleft, rxright); :}
+  | expr:l MINUS expr:r {: RESULT = new BinOp("-", l, r, lxleft, rxright); :}
+  | expr:l TIMES expr:r {: RESULT = new BinOp("*", l, r, lxleft, rxright); :}
+  | expr:l DIV expr:r {: RESULT = new BinOp("/", l, r, lxleft, rxright); :}
+  | expr:l INF expr:r {: RESULT = new BinOp("<", l, r, lxleft, rxright); :}
+  | expr:l SUP expr:r {: RESULT = new BinOp(">", l, r, lxleft, rxright); :}
+  | expr:l INF_EGAL expr:r {: RESULT = new BinOp("<=", l, r, lxleft, rxright); :}
+  | expr:l SUP_EGAL expr:r {: RESULT = new BinOp(">=", l, r, lxleft, rxright); :}
+  | expr:l DOUBLE_EGAL expr:r {: RESULT = new BinOp("==", l, r, lxleft, rxright); :}
+  | expr:l INEGAL expr:r {: RESULT = new BinOp("!=", l, r, lxleft, rxright); :}
+  | LPAREN expr:e RPAREN {: RESULT = e; :}
+;

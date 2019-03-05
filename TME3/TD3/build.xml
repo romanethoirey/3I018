@@ -1,0 +1,24 @@
+<project name="TD" basedir=".">
+
+  <echo message="Cleaning"/>
+  <delete>
+    <fileset dir="." includes="**/*.class"/>
+    <fileset dir="lexer" includes="*.java"/>
+    <fileset dir="parser" includes="*.java"/>
+  </delete>
+
+  <exec dir="lexer" executable="jflex">
+    <arg value="lexer.flex"/>
+  </exec>
+  <java dir="parser"
+	jar="/Vrac/3I018/java-cup-11b.jar" fork="true">
+       <arg value="-locations"/>
+       <arg value="parser.cup"/>
+     </java>
+
+  <javac srcdir="kast" destdir="."/>
+  <javac srcdir="ast" destdir="."/>
+  <javac srcdir="parser:lexer" destdir="."/>
+  <javac srcdir="." destdir="."/>
+
+</project>
