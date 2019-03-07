@@ -1,0 +1,21 @@
+
+1) Ajout de :
+    - JCompiler/src/microjs/jcompiler/frontend/ast/Echange.java
+    - JCompiler/src/microjs/jcompiler/middleend/kast/KEchange.java
+    
+2) Modifier :
+    - JCompiler/src/microjs/jcompiler/frontend/lexer/lexer.flex
+    - JCompiler/src/microjs/jcompiler/frontend/parser/parser.flex
+    - JCompiler/src/microjs/jcompiler/middleend/kast/KASTVisitor.java
+    - JCompiler/src/microjs/jcompiler/middleend/kast/KPrettyPrint.java
+    - JCompiler/src/microjs/jcompiler/backend/Compiler.java
+
+3) Compiler le compilateur dans JCompiler :
+    - ant  uberjar ==> jcompiler.jar
+
+4) Compiler un programme microJS en bytecode :
+    - java  -jar  jcompiler.jar  mon_programme.js  ==>  mon_programme.js.bc
+
+5) Tester avec la NativeVM :
+    - NativeVM/runvm  mon_programme.js.bc
+
