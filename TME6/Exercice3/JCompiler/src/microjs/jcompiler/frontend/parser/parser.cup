@@ -14,6 +14,8 @@ terminal VAR, LET, EQ,
          EQEQ, PLUS, MINUS, TIMES, DIV,
 	 SEMICOL, COMMA;
 
+terminal POINT_INTER, DEUX_POINT;
+
 terminal END;
 
 terminal ECHANGE;
@@ -35,6 +37,7 @@ non terminal List<Statement> block;
 non terminal List<String>    parameters;
 non terminal List<Expr>      arguments;
 
+precedence rigth    POINT_INTER, DEUX_POINT;
 precedence left	    EQEQ;
 precedence left	    PLUS, MINUS;
 precedence left	    TIMES, DIV;
@@ -225,6 +228,10 @@ expr ::=
   | LPAREN  expr:e  RPAREN
 	{:
 	   RESULT = e;
+	:}
+  | expr:cond POINT_INTER expr: altvrai DEUX_POINT expr:altfaux
+	{:
+	   RESULT = new TerOp(cond, altvrai, altfaux, condxleft, altfauxxrigth);
 	:}
 ;
 

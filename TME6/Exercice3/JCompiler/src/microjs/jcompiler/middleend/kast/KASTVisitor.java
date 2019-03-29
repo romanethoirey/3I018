@@ -21,4 +21,5 @@ public interface KASTVisitor {
 	public void visit(KEchange stmt);
 	public void visit(KWhile stmt);
 	public void visit(KWhen stmt);
+	public void visit(KTerOp stmt);
 }

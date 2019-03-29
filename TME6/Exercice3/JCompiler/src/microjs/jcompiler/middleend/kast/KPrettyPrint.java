@@ -73,6 +73,16 @@ public class KPrettyPrint implements KASTVisitor {
 		indent_level--;
 	}
 
+	public void visit(KTerOp stmt) {
+		indent();
+		buf.append("KTerOp(\n");
+		stmt.getCond().accept(this);
+		buf.append("?");
+		stmt.getVrai().accept(this);
+		buf.append(":");
+		stmt.getFaux().accept(this);
+	}
+
 	public void visit(KSeq seq) {
 		indent();
 		buf.append("KSeq[\n");

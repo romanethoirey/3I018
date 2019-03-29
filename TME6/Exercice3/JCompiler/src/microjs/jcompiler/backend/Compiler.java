@@ -24,6 +24,7 @@ import microjs.jcompiler.middleend.kast.KStatement;
 import microjs.jcompiler.middleend.kast.KTrue;
 import microjs.jcompiler.middleend.kast.KVar;
 import microjs.jcompiler.middleend.kast.KVoidExpr;
+import microjs.jcompiler.middleend.kast.KTerOp;
 
 import microjs.jcompiler.middleend.kast.KEchange;
 import microjs.jcompiler.middleend.kast.KWhile;
@@ -113,6 +114,19 @@ public class Compiler implements KASTVisitor {
 		bytecode.jfalse(onFalseLbl);
 		stmt.getCorps().accept(this);
 		bytecode.label(onFalseLbl);
+	}
+
+	@Override
+	public void visit(KTerOp stmt) {
+		String onFalseLbl = nextLabel();
+		String contLbl = nextLabel();
+		stmt.getCond().accept(this);
+		bytecode.jfalse(onFalseLbl);
+		stmt.getVrai().accept(this);
+		bytecode.jump(contLbl);
+		bytecode.label(onFalseLbl);
+		stmt.getFaux().accept(this);
+		bytecode.label(contLbl);
 	}
 
 	@Override

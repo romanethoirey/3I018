@@ -89,6 +89,8 @@ return		{ return symbol("RETURN", sym.RETURN); }
 \*		{ return symbol("TIMES", sym.TIMES); }
 \/		{ return symbol("DIV", sym.DIV); }
 "=="		{ return symbol("EQEQ", sym.EQEQ); }
+\?		{ return symbol("POINT_INTER", sym.POINT_INTER); }
+\:		{ return symbol("DEUX_POINT", sym.DEUX_POINT); }
 
 "<->"		{ return symbol("ECHANGE", sym.ECHANGE); }
 

@@ -12,7 +12,7 @@ terminal VAR, LET, EQ,
 	 IF, ELSE,
 	 FUNCTION, LAMBDA, RETURN,
          EQEQ, PLUS, MINUS, TIMES, DIV,
-	 SEMICOL, COMMA;
+	 SEMICOL, COMMA, POINT_INTER, DEUX_POINT;
 
 terminal END;
 
@@ -33,6 +33,7 @@ non terminal List<Statement> block;
 non terminal List<String>    parameters;
 non terminal List<Expr>      arguments;
 
+precedence rigth    POINT_INTER, DEUX_POINT
 precedence left	    EQEQ;
 precedence left	    PLUS, MINUS;
 precedence left	    TIMES, DIV;
@@ -215,6 +216,21 @@ expr ::=
   | LPAREN  expr:e  RPAREN
 	{:
 	   RESULT = e;
+	:}
+  | expr:cond POINT_INTER expr: altvrai DEUX_POINT expr:altfaux
+        {:
+	  LinkedList<String> param = new LinkedList<String>();
+	  LinkedList<Statement> altf = new LinkedList<Statement>();
+	  LinkedList<Statement> altv = new LinkedList<Statement>();
+	  List<Expr> arg = new LinkedList<Statement>();
+	  LinkedList<Statement> if_statement = new LinkedList<Statement>();
+
+	  param.add("$x$");
+	  altf.add(new Return(altfaux,condxleft, altfauxxrigth));
+	  altv.add(new Return (altvrai, condxleft, altfauxxrigth));
+	  arg.add(cond);
+	  if_statement.add( new If((Expr) new EVar("$x$",condxleft, altfauxxrigth ), altv, altf, condxleft, altfauxxrigth));
+	  RESULT = new Funcall( new Lambda(param, if_statement, condxleft, altfauxxrigth), arg, condxleft, altfauxxrigth);
 	:}
 ;
 
